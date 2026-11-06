@@ -1,0 +1,9 @@
+{
+  "name": "smart-billing-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OCR-based retail billing website starter",
+  "scripts": {
+    "serve": "python3 -m http.server 8080"
+  }
+}

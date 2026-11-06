@@ -1,0 +1,14 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard — Smart Billing</title>
+<style>
+:root{--navy:#101d35;--blue:#2457a7;--gold:#d9ad54;--bg:#f3f6fb}*{box-sizing:border-box}body{margin:0;font-family:system-ui,"Noto Sans Bengali",sans-serif;background:var(--bg);color:#17243a}
+header{background:var(--navy);color:white;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}header strong{font-size:20px}.wrap{max-width:1200px;margin:auto;padding:22px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}nav a{background:white;padding:10px 14px;border-radius:10px;text-decoration:none;color:#1c355c;border:1px solid #e1e7f0;font-weight:650}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}.card,.panel{background:white;border:1px solid #e4eaf2;border-radius:16px;padding:18px;box-shadow:0 4px 16px #17243a08}.metric{font-size:26px;font-weight:800;margin-top:8px}.muted{color:#68758a;font-size:13px}h2{font-size:20px;margin:0 0 14px}
+button{border:0;border-radius:10px;padding:11px 15px;background:var(--blue);color:white;font:inherit;font-weight:700;cursor:pointer}button.secondary{background:#eaf0fb;color:#244b88}button.danger{background:#b42318}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+@media(max-width:600px){.wrap{padding:14px}header{padding:14px}}
+</style></head><body>
+<header><strong>▦ Smart Billing</strong><span>ব্যবসা পরিচালনা প্যানেল</span><button class="secondary" id="logout">লগআউট</button></header>
+<div class="wrap"><nav><a href="dashboard.html">ড্যাশবোর্ড</a><a href="new-bill.html">নতুন বিল</a><a href="products.html">প্রোডাক্ট</a><a href="customers.html">কাস্টমার</a><a href="billing-history.html">বিলের ইতিহাস</a><a href="reports.html">রিপোর্ট</a><a href="settings.html">সেটিংস</a></nav>
+<div class="cards"><div class="card"><div class="muted">আজকের বিক্রি</div><div class="metric" id="todaySales">₹0.00</div></div><div class="card"><div class="muted">আজকের বিল</div><div class="metric" id="todayCount">0</div></div><div class="card"><div class="muted">মোট প্রোডাক্ট</div><div class="metric" id="productCount">0</div></div><div class="card"><div class="muted">কাস্টমার</div><div class="metric" id="customerCount">0</div></div></div>
+<section class="panel" style="margin-top:18px"><h2>দ্রুত কাজ</h2><p class="muted">নতুন বিল তৈরি করুন অথবা রিপোর্ট ও সেটিংস দেখুন।</p><div class="actions"><button onclick="location.href='new-bill.html'">＋ নতুন বিল</button><button class="secondary" onclick="location.href='reports.html'">রিপোর্ট দেখুন</button><button class="secondary" onclick="location.href='settings.html'">সেটিংস</button></div></section>
+</div><script src="js/common.js"></script><script src="js/dashboard.js"></script></body></html>
