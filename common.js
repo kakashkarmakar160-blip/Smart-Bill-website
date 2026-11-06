@@ -1,11 +1,47 @@
-const $ = id => document.getElementById(id);
-function requireLogin(){ if(sessionStorage.getItem("sb_logged_in")!=="yes") location.href="index.html"; }
-requireLogin();
-function getConfig(){return {url:localStorage.getItem("sb_url")||"",key:localStorage.getItem("sb_key")||""};}
-function getClient(){const c=getConfig();if(!c.url||!c.key||!window.supabase)return null;return window.supabase.createClient(c.url,c.key);}
-function getPrefs(){return {gst:Number(localStorage.getItem("sb_default_gst")??"5"),discount:Number(localStorage.getItem("sb_default_discount")??"0"),prefix:localStorage.getItem("sb_invoice_prefix")||"INV"};}
-function money(n){return new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR"}).format(Number(n)||0);}
-function localDemo(key){try{return JSON.parse(localStorage.getItem("demo_"+key)||"[]")}catch{return []}}
-function saveDemo(key,data){localStorage.setItem("demo_"+key,JSON.stringify(data))}
-function logout(){sessionStorage.removeItem("sb_logged_in");location.href="index.html";}
-document.addEventListener("DOMContentLoaded",()=>{const b=$("logout");if(b)b.addEventListener("click",logout);});
+(() => {
+  "use strict";
+  window.$ = (id) => document.getElementById(id);
+  window.requireLogin = function () {
+    if (sessionStorage.getItem("sb_logged_in") !== "yes") {
+      window.location.replace(new URL("index.html", window.location.href).href);
+      return false;
+    }
+    return true;
+  };
+  window.getConfig = () => ({
+    url: localStorage.getItem("sb_url") || "",
+    key: localStorage.getItem("sb_key") || ""
+  });
+  window.getClient = () => {
+    const cfg = window.getConfig();
+    if (!cfg.url || !cfg.key || !window.supabase?.createClient) return null;
+    try { return window.supabase.createClient(cfg.url, cfg.key); }
+    catch (error) { console.error("Supabase configuration error", error); return null; }
+  };
+  window.getPrefs = () => ({
+    gst: Number(localStorage.getItem("sb_default_gst") ?? "5"),
+    discount: Number(localStorage.getItem("sb_default_discount") ?? "0"),
+    prefix: localStorage.getItem("sb_invoice_prefix") || "INV"
+  });
+  window.money = (value) => new Intl.NumberFormat("en-IN", {
+    style: "currency", currency: "INR"
+  }).format(Number(value) || 0);
+  // Local demo fallback only. Real shared business data must use Supabase Auth + RLS.
+  window.localDemo = (key) => {
+    try { return JSON.parse(localStorage.getItem("demo_" + key) || "[]"); }
+    catch { return []; }
+  };
+  window.saveDemo = (key, data) => localStorage.setItem("demo_" + key, JSON.stringify(data));
+  window.logout = () => {
+    sessionStorage.removeItem("sb_logged_in");
+    window.location.assign(new URL("index.html", window.location.href).href);
+  };
+  document.addEventListener("DOMContentLoaded", () => {
+    const button = window.$("logout");
+    if (button) button.addEventListener("click", window.logout);
+  });
+  window.escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[c]));
+  window.requireLogin();
+})();

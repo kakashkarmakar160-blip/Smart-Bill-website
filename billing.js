@@ -26,17 +26,30 @@ $("billType").onchange=render;
 $("saveBill").onclick=async()=>{
  if(!items.length){alert("প্রথমে প্রোডাক্ট যোগ করুন।");return;}
  const t=totals(),date=new Date().toISOString(),customerName=$("customerName").value.trim(),customerPhone=$("customerPhone").value.trim();
- const invoice={invoice_number:prefs.prefix+"-"+Date.now(),created_at:date,date:date.slice(0,10),customer_name:customerName,customer_phone:customerPhone,bill_type:$("billType").value,subtotal:t.subtotal,discount_amount:t.discount,discount_rate:t.discount_rate,gst_amount:t.gst,gst_rate:t.gst_rate,grand_total:t.grand_total,items};
+ const invoice={invoice_number:prefs.prefix+"-"+Date.now(),created_at:date,customer_name:customerName,customer_phone:customerPhone,bill_type:$("billType").value,subtotal:t.subtotal,discount_amount:t.discount,discount_rate:t.discount_rate,gst_amount:t.gst,gst_rate:t.gst_rate,grand_total:t.grand_total,items};
  const client=getClient();
  if(client){
   let customerId=null;
-  if(customerPhone){const found=await client.from("customers").select("id").eq("phone",customerPhone).maybeSingle();if(found.data)customerId=found.data.id;else{const ins=await client.from("customers").insert({name:customerName,phone:customerPhone}).select("id").single();if(!ins.error)customerId=ins.data.id;}}
-  const inv=await client.from("invoices").insert({...invoice,items:undefined,customer_id:customerId}).select("id").single();
+  if(customerPhone && customerName){
+    const found=await client.from("customers").select("id").eq("phone",customerPhone).maybeSingle();
+    if(found.error){$("saveStatus").textContent="কাস্টমার খুঁজতে সমস্যা: "+found.error.message;return;}
+    if(found.data) customerId=found.data.id;
+    else {
+      const ins=await client.from("customers").insert({name:customerName,phone:customerPhone}).select("id").single();
+      if(ins.error){$("saveStatus").textContent="কাস্টমার সেভ হয়নি: "+ins.error.message;return;}
+      customerId=ins.data.id;
+    }
+  }
+  const inv=await client.from("invoices").insert({...invoice,customer_id:customerId}).select("id").single();
   if(inv.error){$("saveStatus").textContent="সেভ হয়নি: "+inv.error.message;return;}
   const rows=items.map(x=>({invoice_id:inv.data.id,product_name:x.name,quantity:x.qty,unit_price:x.price,line_total:x.qty*x.price}));
   const insItems=await client.from("invoice_items").insert(rows);if(insItems.error){$("saveStatus").textContent="বিল সেভ হয়েছে, কিন্তু item সেভে সমস্যা: "+insItems.error.message;return;}
- }else{const arr=localDemo("invoices");arr.push(invoice);saveDemo("invoices",arr);}
- lastInvoice=invoice;$("saveStatus").textContent="বিল সেভ হয়েছে: "+invoice.invoice_number;
+  $("saveStatus").textContent="Supabase-এ বিল সেভ হয়েছে: "+invoice.invoice_number;
+ }else{
+  const arr=localDemo("invoices");arr.push(invoice);saveDemo("invoices",arr);
+  $("saveStatus").textContent="ডেমো মোডে এই ব্রাউজারে সেভ হয়েছে (Supabase সংযুক্ত নয়): "+invoice.invoice_number;
+ }
+ lastInvoice=invoice;
 };
 $("shareBill").onclick=()=>{
  if(!items.length){alert("আগে বিল তৈরি করুন।");return;}
@@ -46,5 +59,4 @@ $("shareBill").onclick=()=>{
  if(phone){const wa=phone.startsWith("91")?phone:"91"+phone;window.open("https://wa.me/"+wa+"?text="+encodeURIComponent(msg),"_blank");}
  else{navigator.clipboard?.writeText(msg);alert("মোবাইল নম্বর নেই। মেসেজ কপি করার চেষ্টা করা হয়েছে।");}
 };
-function render(){const body=$("itemsBody");if(!items.length){body.innerHTML='<tr><td colspan="5">এখনও কোনো প্রোডাক্ট যোগ হয়নি।</td></tr>';}else body.innerHTML=items.map((x,i)=>`<tr><td>${escapeHtml(x.name)}</td><td>${x.qty}</td><td>${money(x.price)}</td><td>${money(x.price*x.qty)}</td><td><button class="danger" data-del="${i}">×</button></td></tr>`).join("");body.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{items.splice(Number(b.dataset.del),1);render();});const t=totals();$("subtotal").textContent=money(t.subtotal);$("discountAmount").textContent=money(t.discount);$("gstAmount").textContent=money(t.gst);$("grandTotal").textContent=money(t.grand_total);}
 render();

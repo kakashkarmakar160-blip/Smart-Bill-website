@@ -1,0 +1,13 @@
+GitHub-এ আপলোড করার নিয়ম (Android ফোন থেকেও)
+
+১) ZIP Extract করুন।
+২) Smart-Billing-Website ফোল্ডার খুলুন।
+৩) ভেতরের index.html, সব .html, js ফোল্ডার, supabase ফোল্ডার, assets ফোল্ডার এবং অন্যান্য ফাইল নির্বাচন করুন।
+৪) GitHub repository-র একেবারে root-এ upload করুন। ZIP-এর বাইরের Smart-Billing-Website ফোল্ডারটিকে একমাত্র root হিসেবে আপলোড করবেন না।
+৫) নিশ্চিত করুন index.html repository-র প্রথম স্তরে দেখা যাচ্ছে এবং js নামে আলাদা ফোল্ডার আছে।
+৬) js ফোল্ডারের ভেতরে auth.js ও common.js থাকতে হবে।
+৭) Settings → Pages-এ main branch এবং /(root) নির্বাচন করুন।
+
+Login ডেমো পাসওয়ার্ড: AK1234
+
+নিরাপত্তা: এটি এখনও demo login। Supabase Auth ও owner-only RLS শেষ না করে বাস্তব দোকানের গ্রাহক/হিসাবের তথ্য রাখবেন না।
