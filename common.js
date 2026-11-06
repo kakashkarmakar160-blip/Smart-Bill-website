@@ -1,11 +1,9 @@
 (() => {
   "use strict";
   window.$ = (id) => document.getElementById(id);
+  // Password/login gate removed as requested.
+  // This only removes the front-end gate; it does NOT secure database access.
   window.requireLogin = function () {
-    if (sessionStorage.getItem("sb_logged_in") !== "yes") {
-      window.location.replace(new URL("index.html", window.location.href).href);
-      return false;
-    }
     return true;
   };
   window.getConfig = () => ({
@@ -33,12 +31,15 @@
   };
   window.saveDemo = (key, data) => localStorage.setItem("demo_" + key, JSON.stringify(data));
   window.logout = () => {
-    sessionStorage.removeItem("sb_logged_in");
-    window.location.assign(new URL("index.html", window.location.href).href);
+    // No login screen is used. Keep the button from sending users into a redirect loop.
+    window.location.assign(new URL("dashboard.html", window.location.href).href);
   };
   document.addEventListener("DOMContentLoaded", () => {
     const button = window.$("logout");
-    if (button) button.addEventListener("click", window.logout);
+    if (button) {
+      button.textContent = "ড্যাশবোর্ড";
+      button.addEventListener("click", window.logout);
+    }
   });
   window.escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, c => ({
     "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"

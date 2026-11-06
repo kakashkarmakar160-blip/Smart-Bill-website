@@ -1,20 +1,15 @@
 <!doctype html>
 <html lang="bn">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Smart Billing — Login</title>
-<style>
-:root{--navy:#101d35;--blue:#2457a7;--gold:#d9ad54;--bg:#f3f6fb}*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,"Noto Sans Bengali",sans-serif;background:linear-gradient(135deg,#101d35,#254d83);min-height:100vh;display:grid;place-items:center;padding:18px;color:#17243a}
-.login{width:min(420px,100%);background:white;border-radius:22px;padding:30px;box-shadow:0 24px 70px #0005}
-.logo{width:58px;height:58px;border-radius:18px;background:#eaf0fb;display:grid;place-items:center;font-size:28px;margin-bottom:16px}
-h1{margin:0 0 6px;font-size:25px}.muted{color:#68758a;font-size:14px}
-label{display:block;font-size:14px;font-weight:650;margin:18px 0 7px}input{width:100%;padding:13px;border:1px solid #d7dfeb;border-radius:11px;font:inherit}
-button{border:0;border-radius:11px;padding:13px 16px;font:inherit;font-weight:700;cursor:pointer;background:var(--blue);color:white}
-.primary{width:100%;margin-top:18px}.hint{font-size:12px;color:#718096;margin-top:16px}.error{color:#b42318;font-size:13px;min-height:20px}
-</style></head><body>
-<main class="login"><div class="logo">▦</div><h1>Smart Billing</h1><p class="muted">আপনার বিলিং ড্যাশবোর্ডে প্রবেশ করুন</p>
-<form id="loginForm"><label for="password">পাসওয়ার্ড</label><input id="password" type="password" autocomplete="current-password" placeholder="পাসওয়ার্ড লিখুন" required>
-<div class="error" id="error"></div><button class="primary" type="submit">লগইন করুন</button></form>
-<p class="hint">ডেমো পাসওয়ার্ড: AK1234। এটি নিরাপদ বাস্তব লগইন নয়; প্রকাশ্যে ব্যবসার তথ্য রাখার আগে Supabase Auth চালু করুন।</p></main>
-<script src="js/auth.js"></script></body></html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="0; url=dashboard.html">
+<title>Smart Billing</title>
+<script>
+  window.location.replace(new URL("dashboard.html", window.location.href).href);
+</script>
+</head>
+<body>
+<p>ড্যাশবোর্ড খোলা হচ্ছে... <a href="dashboard.html">এখানে চাপুন</a></p>
+</body>
+</html>
